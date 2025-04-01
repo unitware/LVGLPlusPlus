@@ -281,7 +281,11 @@ protected:
  *
  * @param pOpts newline-separated list of options. Unused for lvppCycleButton.
  */
-    void lvOptionSetter(const char* pOpts) { setText(options[currentIndex].c_str()); };
+    void lvOptionSetter(const char* pOpts) {
+        (void) pOpts;
+        setText(options[currentIndex].c_str());
+    };
+
 /**
  * @brief This is the implementation of the pure virtual in lvppOptions. It is responsible
  *        for doing the actual class-specific 'get' - in this case just the currentIndex.
