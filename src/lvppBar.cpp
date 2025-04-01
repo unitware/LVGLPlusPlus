@@ -56,13 +56,14 @@ void lvppBar::setRange(int16_t range_min, int16_t range_max)
     lv_bar_set_range(obj, range_min, range_max);
 }
 
+#endif
 
 /////////////////////////////
 //
 //
 //
 /////////////////////////////
-
+#if LV_USE_SLIDER
 lvppSlider::lvppSlider(const char* fName, lv_obj_t* parent) : lvppBaseWithValue(fName, "SLIDER") {
     objParent = parent ? parent : lv_scr_act();
     createObj(lv_slider_create(objParent));
