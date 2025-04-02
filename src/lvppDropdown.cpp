@@ -86,11 +86,12 @@ void lvppDropdown::setSelectedIndex(uint16_t curInd) {
         onValueChanged();
     }
 }
-
+#endif
 //////////////
 //////////////
 //////////////
 
+#if LV_USE_ROLLER
 lvppRoller::lvppRoller(const char* fName, const char* pOptions, lv_obj_t* parent) : lvppBase(fName, "DROPDOWN") {
     objParent = parent ? parent : lv_scr_act();
     createObj(lv_roller_create(objParent));
