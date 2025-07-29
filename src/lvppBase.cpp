@@ -118,12 +118,12 @@ void lvppBase::setFontSize(uint8_t points) {
             return;
     }
 
-    lv_obj_add_style(obj, &style_obj, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_style(obj, &style_obj, LV_PART_MAIN /*| LV_STATE_DEFAULT*/);
 }
 
 void lvppBase::setFont(const lv_font_t* pF) {
     lv_style_set_text_font(&style_obj, pF);
-    lv_obj_add_style(obj, &style_obj, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_style(obj, &style_obj, LV_PART_MAIN /*| LV_STATE_DEFAULT*/);
 }
 
 /** @todo I think this add_style needs to go away and an 'invalidate' should be used instead.
@@ -133,7 +133,7 @@ void lvppBase::setBGColor(lv_color_t color) {
     lv_obj_set_style_bg_color(obj, color, LV_PART_MAIN);
 //    lv_style_set_bg_color(&style_obj, color);
 //    lv_style_set_bg_opa(&style_obj, LV_OPA_100);
-//    lv_obj_add_style(obj, &style_obj, LV_PART_MAIN | LV_STATE_DEFAULT);
+//    lv_obj_add_style(obj, &style_obj, LV_PART_MAIN /*| LV_STATE_DEFAULT*/);
     if (label) {
 //        printf(":%s:setVGColor - setting label background color now.\n", whoAmI());
         lv_obj_set_style_bg_color(label, color, 0);
@@ -487,7 +487,7 @@ void lvppBaseWithValue::setValue(int16_t value, bool animate)
     if (value >= min && value <= max) {
         curValue = value;
         baseSetter(value, animate);
-        lv_event_send(obj, LV_EVENT_VALUE_CHANGED, NULL);
+        lv_obj_send_event(obj, LV_EVENT_VALUE_CHANGED, NULL);
     }
 }
 

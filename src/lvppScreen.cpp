@@ -26,6 +26,7 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 #include "lvpp.h"
+#include <string.h>
 
 /**
  * @file lvppScreen.cpp

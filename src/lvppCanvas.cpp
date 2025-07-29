@@ -35,7 +35,7 @@
 
 lvppCanvasIndexed::lvppCanvasIndexed(const char* fName, lv_coord_t x, lv_coord_t y, lv_coord_t w, lv_coord_t h, uint8_t colorDepth, lv_color_t* providedBuffer, lv_obj_t* parent) 
     : lvppBase(fName, "CANVASINDEXED") {
-    lv_img_cf_t cfType;
+    lv_color_format_t cfType;
     int bufSize;
 
     width = w;
@@ -49,28 +49,28 @@ lvppCanvasIndexed::lvppCanvasIndexed(const char* fName, lv_coord_t x, lv_coord_t
 
     switch(colorDepth) {
         case 1:
-            cfType = LV_IMG_CF_INDEXED_1BIT;
+            cfType = LV_COLOR_FORMAT_I1;
             maxColorIndexesAllowed = 2;
-            bufSize = sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE_INDEXED_1BIT(w, h);
+            bufSize = sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE(w, h, 1, 1);
             break;
         case 2:
-            cfType = LV_IMG_CF_INDEXED_2BIT;
+            cfType = LV_COLOR_FORMAT_I2;
             maxColorIndexesAllowed = 4;
-            bufSize = sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE_INDEXED_2BIT(w, h);
+            bufSize = sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE(w, h, 2, 1);
             break;
         case 4:
-            cfType = LV_IMG_CF_INDEXED_4BIT;
+            cfType = LV_COLOR_FORMAT_I4;
             maxColorIndexesAllowed = 16;
-            bufSize = sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE_INDEXED_4BIT(w, h);
+            bufSize = sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE(w, h, 4, 1);
             break;
         case 8:
-            cfType = LV_IMG_CF_INDEXED_8BIT;
+            cfType = LV_COLOR_FORMAT_I8;
             maxColorIndexesAllowed = 256;
-            bufSize = sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE_INDEXED_8BIT(w, h);
+            bufSize = sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE(w, h, 8, 1);
             break;
         default:
             LV_LOG_ERROR("lvppCanvasIndexed: colorDepth must be one of 1,2,4,8.");
-            throw;
+            // throw;
             break;
     }
 
@@ -103,11 +103,11 @@ lvppCanvasIndexed::~lvppCanvasIndexed() {
 // Map a new color into the color index for later use.
 //
 bool lvppCanvasIndexed::addColorToIndex(lv_color_t col) {
-    if (colorToIndex.count(col.full))
+    if (colorToIndex.count(col))
         return true; // We've already got this index color
 
     if (colorIndexesUsed < maxColorIndexesAllowed) {
-        colorToIndex[col.full] = colorIndexesUsed;
+        colorToIndex[col] = colorIndexesUsed;
         lv_canvas_set_palette(obj, colorIndexesUsed, col);
         colorIndexesUsed++;
         return true;
@@ -210,7 +210,7 @@ void lvppCanvasIndexed::drawLineVertByIndex(lv_coord_t x1, lv_coord_t y1, lv_coo
     }
 
     for (lv_coord_t y=y1; y<y1+h; y++) {
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1, y, indexCol);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1, y, indexCol);
     }
 
     lv_obj_invalidate(obj);
@@ -233,7 +233,7 @@ void lvppCanvasIndexed::drawLineHorizByIndex(lv_coord_t x1, lv_coord_t y1, lv_co
     }
 
     for (lv_coord_t x=x1; x<x1+w; x++) {
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1, indexCol);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1, indexCol);
     }
 
     lv_obj_invalidate(obj);
@@ -258,16 +258,16 @@ void lvppCanvasIndexed::drawRectWithoutFillByIndex(lv_coord_t x1, lv_coord_t y1,
     }
 
     for (lv_coord_t x=x1 ; x<x1+w; x++)
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1, borderColorInd);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1, borderColorInd);
 
     for (lv_coord_t y=y1; y<y1+h; y++)
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1, y, borderColorInd);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1, y, borderColorInd);
 
     for (lv_coord_t y=y1; y<y1+h; y++)
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1+w, y, borderColorInd);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1+w, y, borderColorInd);
 
     for (lv_coord_t x=x1 ; x<x1+w; x++)
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1+h, borderColorInd);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1+h, borderColorInd);
 
     lv_obj_invalidate(obj);
 }
@@ -295,21 +295,21 @@ void lvppCanvasIndexed::drawRectWithFillByIndex(lv_coord_t x1, lv_coord_t y1, lv
     }
 
     for (lv_coord_t x=x1 ; x<x1+w; x++)
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1, borderColorInd);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1, borderColorInd);
 
     for (lv_coord_t y=y1; y<y1+h; y++)
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1, y, borderColorInd);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1, y, borderColorInd);
 
     for (lv_coord_t y=y1; y<y1+h; y++)
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1+w, y, borderColorInd);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x1+w, y, borderColorInd);
 
     for (lv_coord_t x=x1 ; x<x1+w; x++)
-        lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1+h, borderColorInd);
+        lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y1+h, borderColorInd);
 
     // Now for the fill operation
     for (lv_coord_t y=y1+1; y<y1+h; y++) {
         for (lv_coord_t x=x1+1 ; x<x1+w; x++) {
-            lv_img_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y, fillColorInd);
+            lv_image_buf_set_px_color(&((lv_canvas_t*)obj)->dsc, x, y, fillColorInd);
         }
     }
     
@@ -380,7 +380,7 @@ lvppCanvasFullColor::lvppCanvasFullColor(const char* fName, lv_coord_t x, lv_coo
     pBuffer = (lv_color_t*)malloc(sizeof(lv_color_t)*LV_CANVAS_BUF_SIZE_TRUE_COLOR(w, h));
     assert(pBuffer);
 
-    lv_canvas_set_buffer(obj, pBuffer, w, h, LV_IMG_CF_TRUE_COLOR);
+    lv_canvas_set_buffer(obj, pBuffer, w, h, LV_COLOR_FORMAT_TRUE_COLOR);
     align(LV_ALIGN_TOP_LEFT, x, y);
 
     pDscLabel = nullptr;

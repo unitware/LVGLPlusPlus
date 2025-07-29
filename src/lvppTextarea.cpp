@@ -65,7 +65,7 @@ void lvppTextarea::setTextColor(lv_color_t newColor) {
 void lvppTextarea::eventHandler(lv_event_t* event) {
     lv_event_code_t code = lv_event_get_code(event);
 
-    lv_obj_t * ta = lv_event_get_target(event);
+    lv_obj_t * ta = static_cast<lv_obj_t *>(lv_event_get_target(event));
     if (!ta) {
         printf("lvppTextarea::eventHandler - no target for event.\n");
     }
