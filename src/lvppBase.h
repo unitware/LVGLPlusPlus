@@ -467,7 +467,7 @@ public:
  *
  * @return uint16_t The current percentage along the way between min and max that value represents.
  */
-    uint16_t getValuePercentage(void) { return 100 * (curValue-min) / (max-min); };
+    uint16_t getValuePercentage(void) { return (uint16_t)(100 * (curValue-min) / (max-min)); };
 /**
  * @brief In the case where a label is desired to be shown for the value, enable it and align it here.
  *
@@ -567,6 +567,7 @@ private:
  */
 class lvppOptions {
 public:
+    virtual ~lvppOptions() {}
 /**
  * @brief Set the Options all in one shot from a const char*
  *

@@ -221,6 +221,7 @@ public:
  * @param parent If provided, the parent of the button object. This is a real LVGL lv_obj_t pointer
  */
     lvppButton(const char* fName, const char* pText=nullptr, lv_obj_t* parent=nullptr);
+    virtual ~lvppButton() {}
 };
 
 //
@@ -711,6 +712,8 @@ public:
  * @param parent If provided, the parent of the object. This is a real LVGL lv_obj_t pointer
  */
     lvppRoller(const char* fName, const char* pOptions=nullptr, lv_obj_t* parent=nullptr);
+
+    ~lvppRoller();
 /**
  * @brief sets the complete list of options by way of a char pointer with options separated by `\n`
  *
@@ -733,7 +736,7 @@ public:
  *
  * @return uint16_t Value from 0-(n-1) of the selected option.
  */
-    uint16_t getSelectedIndex() { return lv_roller_get_selected(obj); };
+    uint32_t getSelectedIndex() { return lv_roller_get_selected(obj); };
 /**
  * @brief Set the selected option manually/programmatically.
  *

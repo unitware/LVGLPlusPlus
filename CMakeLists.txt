@@ -20,7 +20,7 @@ add_library(lvglcpp
 )
 
 target_link_libraries(lvglcpp
-    pico_stdlib
+#    pico_stdlib
     lvgl
 )
 

@@ -193,7 +193,6 @@ lvppBase::~lvppBase() {
       lv_obj_del_async(obj);
       obj = nullptr;
     }
-
 }
 
 void lvppBase::createLabel() {

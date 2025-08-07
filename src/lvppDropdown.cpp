@@ -92,11 +92,17 @@ void lvppDropdown::setSelectedIndex(uint16_t curInd) {
 //////////////
 
 #if LV_USE_ROLLER
-lvppRoller::lvppRoller(const char* fName, const char* pOptions, lv_obj_t* parent) : lvppBase(fName, "DROPDOWN") {
+lvppRoller::lvppRoller(const char* fName, const char* pOptions, lv_obj_t* parent)
+    : lvppBase(fName, "DROPDOWN")
+{
     objParent = parent ? parent : lv_scr_act();
     createObj(lv_roller_create(objParent));
     setOptions(pOptions);
 //    lv_roller_set_visible_row_count(obj, 6);
+}
+
+lvppRoller::~lvppRoller() {
+    // lvppBase::~lvppBase();
 }
 
 void lvppRoller::lvOptionSetter(const char* pOpts) {
